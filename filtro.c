@@ -36,10 +36,5 @@ void imprimirMatriz(int tamOriginal, int *matrizAleatoria){
     }
     printf("\n");
 }
-// void matrizJanelaNova(int tam, int *matrizAleatoria, int *matrizJanela){
 
-//     for(int i = 0; i<tam*tam; i++){
-//         *()
-//     }
-// }
 
