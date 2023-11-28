@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+void espelharJanela(int *, int, int, int *, int);
 void imprimirMatriz(int, int *);
 int main(int argc, char **argv){
 
@@ -23,6 +24,15 @@ int main(int argc, char **argv){
 
     imprimirMatriz(tamOriginal, matrizAleatoria);
     imprimirMatriz(tamJanela, matrizJanela);
+    for(int i = 0; i<tamOriginal*tamOriginal; i++){
+        //exclui as bordas
+        if((i >= 0 && i<=tamOriginal) | (i<tamOriginal*tamOriginal && i>tamOriginal*tamOriginal-tamOriginal) | i%tamOriginal==0){
+            printf("borda\n");
+        }
+        else{
+        espelharJanela(matrizAleatoria, tamOriginal, i, matrizJanela, tamJanela);
+        imprimirMatriz(tamJanela, matrizJanela);}
+    }
 
     return 0;
     free(matrizAleatoria);
@@ -36,26 +46,26 @@ void imprimirMatriz(int tamOriginal, int *matrizAleatoria){
     }
     printf("\n");
 }
+//algoritmo para preencher a matriz sem os números das bordas
+void espelharJanela(int *matrizAleatoria, int tamOriginal, int numCentral, int *matrizJanela, int tamJanela){
 
-void espelharjanela(int *m, int tm, int el, int *j, int tj){
+    int contadorFrente = numCentral - 1;
+    int contadorTras = contadorFrente;
+    int controleQuebraLinha = tamJanela/2;
 
-    int cpf = el - 1;
-    int cpt = cpf;
-    int q = tj/2;
-
-    for(int i = 0 ; i <= (tj*tj)/2; i++){
-        if(q==tj){
-            cpf += tm-tj;
-            cpt -= tm-tj;
-            q = 0;
+    for(int i = 0 ; i <= (tamJanela*tamJanela)/2; i++){
+        if(controleQuebraLinha==tamJanela){
+            contadorFrente += tamOriginal-tamJanela;
+            contadorTras -= tamOriginal-tamJanela;
+            controleQuebraLinha = 0;
         }
 
-        *(j + (tj*tj)/2 +i) = *(m + cpf);
-        *(j + (tj*tj)/2 -i) = *(m + cpt);
+        *(matrizJanela + (tamJanela*tamJanela)/2 +i) = *(matrizAleatoria + contadorFrente);
+        *(matrizJanela + (tamJanela*tamJanela)/2 -i) = *(matrizAleatoria + contadorTras);
         
-        cpf++;
-        q++;
-        cpt--;
+        contadorFrente++;
+        controleQuebraLinha++;
+        contadorTras--;
 
     }
 }
