@@ -37,4 +37,26 @@ void imprimirMatriz(int tamOriginal, int *matrizAleatoria){
     printf("\n");
 }
 
+void espelharjanela(int *m, int tm, int el, int *j, int tj){
+
+    int cpf = el - 1;
+    int cpt = cpf;
+    int q = tj/2;
+
+    for(int i = 0 ; i <= (tj*tj)/2; i++){
+        if(q==tj){
+            cpf += tm-tj;
+            cpt -= tm-tj;
+            q = 0;
+        }
+
+        *(j + (tj*tj)/2 +i) = *(m + cpf);
+        *(j + (tj*tj)/2 -i) = *(m + cpt);
+        
+        cpf++;
+        q++;
+        cpt--;
+
+    }
+}
 
