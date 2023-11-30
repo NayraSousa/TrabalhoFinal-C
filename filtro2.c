@@ -10,39 +10,40 @@ int calcularMedia(int **, int , int , int , int );
 
 int main(int argc, char *argv[]) {
     
+    //Verifica argumentos da linha de comando
     if(argc != 3)exit(1);
     if(!(atoi(argv[1])%2) | !(atoi(argv[2])%2)) exit(2);
 
-    int tamz = atoi(argv[1]);
-    int tamj = atoi(argv[2]);
+    int tamMatriz = atoi(argv[1]);
+    int tamJanela = atoi(argv[2]);
 
     // Aloca espaço para a matriz original e a matriz nova
-    int **matriz = (int **)malloc(tamz * sizeof(int *));
-    int **matrizNova = (int **)malloc(tamz * sizeof(int *));
+    int **matriz = (int **)malloc(tamMatriz * sizeof(int *));
+    int **matrizNova = (int **)malloc(tamMatriz * sizeof(int *));
 
-    for (int i = 0; i < tamz; i++) {
-        matriz[i] = (int *)malloc(tamz * sizeof(int));
-        matrizNova[i] = (int *)malloc(tamz * sizeof(int));
+    for (int i = 0; i < tamMatriz; i++) {
+        matriz[i] = (int *)malloc(tamMatriz * sizeof(int));
+        matrizNova[i] = (int *)malloc(tamMatriz * sizeof(int));
     }
 
     // Preenche a matriz original com valores aleatórios
     srand(time(NULL));
-    for (int i = 0; i < tamz; i++) {
-        for (int j = 0; j < tamz; j++) {
+    for (int i = 0; i < tamMatriz; i++) {
+        for (int j = 0; j < tamMatriz; j++) {
             matriz[i][j] = rand() % RANGE;
         }
     }
 
     printf("matriz gerada:\n");
-    imprimirMatriz(matriz, tamz);
+    imprimirMatriz(matriz, tamMatriz);
 
-    GerarMatrizBorrada(matriz, matrizNova, tamz, tamj);
+    GerarMatrizBorrada(matriz, matrizNova, tamMatriz, tamJanela);
 
     printf("\nmatriz apos filtro:\n");
-    imprimirMatriz(matrizNova, tamz);
+    imprimirMatriz(matrizNova, tamMatriz);
 
-
-    for (int i = 0; i < tamz; i++) {
+    // Libera memória alocada
+    for (int i = 0; i < tamMatriz; i++) {
         free(matriz[i]);
         free(matrizNova[i]);
     }
@@ -52,39 +53,39 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-int calcularMedia(int **m, int lin, int col, int tamj, int tm) {
+int calcularMedia(int **matriz, int linha, int coluna, int tamJanela, int tamanhoMatriz) {
 
     int soma = 0;
 
-    for (int i = -tamj / 2; i <= tamj / 2; i++) {
-        for (int j = -tamj / 2; j <= tamj / 2; j++) {
+    for (int i = -tamJanela / 2; i <= tamJanela / 2; i++) {
+        for (int j = -tamJanela / 2; j <= tamJanela / 2; j++) {
 
-            int linv = lin + i;
-            int colv = col + j;
+            int linhaVizinha = linha + i;
+            int colunaVizinha = coluna + j;
 
             // Verifica se a posição é válida na matriz original
-            if ((linv >= 0) && (linv < tm) && (colv >= 0) && (colv < tm)) {
-                soma += m[linv][colv];
+            if ((linhaVizinha >= 0) && (linhaVizinha < tamanhoMatriz) && (colunaVizinha >= 0) && (colunaVizinha < tamanhoMatriz)) {
+                soma += matriz[linhaVizinha][colunaVizinha];
             }
         }
     }
     
-    return soma / (tamj*tamj);
+    return soma / (tamJanela*tamJanela);
 }
 
-void imprimirMatriz(int **m, int t) {
-    for (int i = 0; i < t; i++) {
-        for (int j = 0; j < t; j++) {
-            printf("%4d ", m[i][j]);
+void imprimirMatriz(int **matriz, int tamanhoMatriz) {
+    for (int i = 0; i < tamanhoMatriz; i++) {
+        for (int j = 0; j < tamanhoMatriz; j++) {
+            printf("%4d ", matriz[i][j]);
         }
         printf("\n");
     }
 }
 
-void GerarMatrizBorrada(int **m, int **matrizNova, int tamz, int tamj) {
-    for (int i = 0; i < tamz; i++) {
-        for (int j = 0; j < tamz; j++) {
-            matrizNova[i][j] = calcularMedia(m, i, j, tamj, tamz);
+void GerarMatrizBorrada(int **matriz, int **matrizNova, int tamMatriz, int tamJanela) {
+    for (int i = 0; i < tamMatriz; i++) {
+        for (int j = 0; j < tamMatriz; j++) {
+            matrizNova[i][j] = calcularMedia(matriz, i, j, tamJanela, tamMatriz);
         }
     }
 }
