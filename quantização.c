@@ -147,8 +147,6 @@ void quantizacao(int **matrizQuant, int tamMatriz, int **matrizNova, int quant){
 
 void gerarScm(int *vetorSCM, int quant, int **matrizQuantOrig, int **matrizQuantFiltro, int tamMatriz){
 
-    int matriz1, matriz2;
-
     for(int i = 0; i<quant*quant; i++){
         *(vetorSCM+i) = 0;
     }
