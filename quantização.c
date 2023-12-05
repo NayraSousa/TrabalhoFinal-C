@@ -8,6 +8,7 @@ void gerarMatrizBorrada(int **, int **, int, int);
 void imprimirMatriz(int **, int );
 int calcularMedia(int **, int , int , int , int );
 void quantizacao(int **, int , int **, int);
+void gerarScm(int *, int, int **, int **, int);
 
 int main(int argc, char *argv[]) {
     
@@ -24,7 +25,7 @@ int main(int argc, char *argv[]) {
     int **matrizNova = (int **)malloc(tamMatriz * sizeof(int *));
     int **matrizQuantOrig = (int **)malloc(tamMatriz * sizeof(int *));
     int **matrizQuantFiltro = (int **)malloc(tamMatriz * sizeof(int *));
-    int *vetorSCM = NULL;
+    int *vetorSCM = (int *)malloc(quant*quant*sizeof(int));
 
 
     for (int i = 0; i < tamMatriz; i++) {
@@ -50,17 +51,27 @@ int main(int argc, char *argv[]) {
     printf("\nmatriz apos filtro:\n");
     imprimirMatriz(matrizNova, tamMatriz);
 
-    printf("\nmatriz quantizada por :\n");
+    printf("\nmatriz quantizada por %i:\n", quant);
 
     printf("Matriz Original:\n");
-    quantizacao(matrizQuantOrig, tamMatriz, matriz, 8);
+    quantizacao(matrizQuantOrig, tamMatriz, matriz, quant);
     imprimirMatriz(matrizQuantOrig, tamMatriz);
 
     printf("\n");
 
     printf("Matriz filtro:\n");
-    quantizacao(matrizQuantFiltro, tamMatriz, matrizNova, 8);
+    quantizacao(matrizQuantFiltro, tamMatriz, matrizNova, quant);
     imprimirMatriz(matrizQuantFiltro, tamMatriz);
+    printf("\n");
+
+    printf("Vetor SCM:\n");
+    gerarScm(vetorSCM, quant, matrizQuantOrig, matrizQuantFiltro, tamMatriz);
+    for(int i = 0; i<quant*quant;i++){
+        if(i%quant==0){
+            printf("\n");
+        }
+        printf("%i ", *(vetorSCM+i));
+    }
     printf("\n");
 
 
@@ -134,16 +145,18 @@ void quantizacao(int **matrizQuant, int tamMatriz, int **matrizNova, int quant){
     }
 }
 
-// void gerarScm(int *vetorSCM, int quant, int **matrizQuantOrig, int **matrizQuantFiltro, int tamMatriz){
+void gerarScm(int *vetorSCM, int quant, int **matrizQuantOrig, int **matrizQuantFiltro, int tamMatriz){
 
-//     for(int i = 0; i<quant*quant; i++){
-//         *(vetorSCM+i) = 0;
-//     }
+    int matriz1, matriz2;
 
-//     for(int i = 0; i<tamMatriz; i++){
-//         for(int j = 0; j<tamMatriz; j++){
+    for(int i = 0; i<quant*quant; i++){
+        *(vetorSCM+i) = 0;
+    }
 
-//         }
-//     }
+    for(int i = 0; i<tamMatriz; i++){
+        for(int j = 0; j<tamMatriz; j++){
+            *(vetorSCM+(matrizQuantOrig[i][j]*quant)+matrizQuantFiltro[i][j]) += 1;
+        }
+    }
 
-// }
+}
