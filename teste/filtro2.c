@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define RANGE 10
+#define RANGE 255
 
 void GerarMatrizBorrada(int **, int **, int, int);
 void imprimirMatriz(int **, int );

@@ -1,8 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pgm.h"
-#include "struct.h"
 
+struct pgm{
+	int tipo; //P2 or P5
+	int c; //column
+	int r; //row
+	int mv; // max value
+	int *pData; //pixels
+};
+
+void readPGMImage(struct pgm *, char *);
+void viewPGMImage(struct pgm *);
+void writePGMImage(struct pgm *, char *);
+
+int main(int argc, char *argv[]){
+
+	struct pgm img;
+
+	if (argc!=3){
+		printf("Formato: \n\t %s <imagemEntrada.pgm> <imagemSaida.pgm>\n",argv[0]);
+		exit(1);
+	}
+
+	readPGMImage(&img,argv[1]);
+
+    //borra a imagem 3x3, 5x5, 7x7
+
+	writePGMImage(&img, argv[2]);
+
+	viewPGMImage(&img);
+
+	return 0;
+
+}
 
 void readPGMImage(struct pgm *pio, char *filename){
 
@@ -36,18 +66,18 @@ void readPGMImage(struct pgm *pio, char *filename){
 	fscanf(fp, "%d",&pio->mv);
 	fseek(fp,1, SEEK_CUR);
 
-	pio->pData = (int*) malloc(pio->r * pio->c * sizeof(int));
+	pio->pData = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
 
 	switch(pio->tipo){
 		case 2:
 			puts("Lendo imagem PGM (dados em texto)");
 			for (int k=0; k < (pio->r * pio->c); k++){
-				fscanf(fp, "%i", pio->pData+k);
+				fscanf(fp, "%hhu", pio->pData+k);
 			}
 		break;	
 		case 5:
 			puts("Lendo imagem PGM (dados em binário)");
-			fread(pio->pData,sizeof(int),pio->r * pio->c, fp);
+			fread(pio->pData,sizeof(unsigned char),pio->r * pio->c, fp);
 		break;
 		default:
 			puts("Não está implementado");
@@ -70,7 +100,7 @@ void writePGMImage(struct pgm *pio, char *filename){
 	fprintf(fp, "%d %d\n",pio->c, pio->r);
 	fprintf(fp, "%d\n", 255);
 
-	fwrite(pio->pData, sizeof(int),pio->c * pio->r, fp);
+	fwrite(pio->pData, sizeof(unsigned char),pio->c * pio->r, fp);
 
 	fclose(fp);
 
