@@ -2,14 +2,14 @@
 
 void readPGMImage(struct pgm *pio, char *filename){
 
+	char diretorio[100] = "/home/nayra/Projects/trabalho-final/TrabalhoFinal-C/oncotex_pgm/";
 	FILE *fp;
 	char ch;
-
-	if (!(fp = fopen(filename,"r"))){
+	
+	if (!(fp = fopen(strcat(diretorio, filename),"r"))){
 		perror("Erro.");
 		exit(1);
 	}
-
 	if ( (ch = getc(fp))!='P'){
 		puts("A imagem fornecida não está no formato pgm");
 		exit(2);
@@ -33,7 +33,7 @@ void readPGMImage(struct pgm *pio, char *filename){
 	fscanf(fp, "%d",&pio->mv);
 	fseek(fp,1, SEEK_CUR);
 
-	pio->pData = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
+	pio->pData = (char*) malloc(pio->r * pio->c * sizeof(char));
 
 	switch(pio->tipo){
 		case 2:
@@ -44,7 +44,7 @@ void readPGMImage(struct pgm *pio, char *filename){
 		break;	
 		case 5:
 			puts("Lendo imagem PGM (dados em binário)");
-			fread(pio->pData,sizeof(unsigned char),pio->r * pio->c, fp);
+			fread(pio->pData,sizeof(char),pio->r * pio->c, fp);
 		break;
 		default:
 			puts("Não está implementado");
@@ -67,7 +67,7 @@ void writePGMImage(struct pgm *pio, char *filename){
 	fprintf(fp, "%d %d\n",pio->c, pio->r);
 	fprintf(fp, "%d\n", 255);
 
-	fwrite(pio->pData, sizeof(unsigned char),pio->c * pio->r, fp);
+	fwrite(pio->pData, sizeof(char),pio->c * pio->r, fp);
 
 	fclose(fp);
 
@@ -75,6 +75,7 @@ void writePGMImage(struct pgm *pio, char *filename){
 
 
 void viewPGMImage(struct pgm *pio){
+	printf("----------------------------\n");
 	printf("Tipo: %d\n",pio->tipo);
 	printf("Dimensões: [%d %d]\n",pio->c, pio->r);
 	printf("Max: %d\n",pio->mv);
