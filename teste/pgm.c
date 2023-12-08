@@ -6,7 +6,7 @@ struct pgm{
 	int c; //column
 	int r; //row
 	int mv; // max value
-	int *pData; //pixels
+	unsigned char *pData; //pixels
 };
 
 void readPGMImage(struct pgm *, char *);
