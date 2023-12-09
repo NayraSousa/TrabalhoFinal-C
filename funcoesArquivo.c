@@ -2,7 +2,7 @@
 
 void readPGMImage(struct pgm *pio, char *filename){
 
-	char diretorio[100] = "/home/nayra/Projects/trabalho-final/TrabalhoFinal-C/oncotex_pgm/";
+	char diretorio[100] = "/home/nayra/Projects/trabalho-final/TrabalhoFinal-C/pgm/";
 	FILE *fp;
 	char ch;
 	
@@ -33,7 +33,12 @@ void readPGMImage(struct pgm *pio, char *filename){
 	fscanf(fp, "%d",&pio->mv);
 	fseek(fp,1, SEEK_CUR);
 
-	pio->pData = (char*) malloc(pio->r * pio->c * sizeof(char));
+	pio->pData = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
+	pio->pDataBorrado = (unsigned char *) malloc(pio->r * pio->c * sizeof(unsigned char));
+	// pio->pDataOrigQuantizado = (int*) malloc(pio->r * pio->c * sizeof(int));
+	// pio->pDataBorradoQuantizado = (int*) malloc(pio->r * pio->c * sizeof(int));
+
+
 
 	switch(pio->tipo){
 		case 2:
@@ -44,7 +49,7 @@ void readPGMImage(struct pgm *pio, char *filename){
 		break;	
 		case 5:
 			puts("Lendo imagem PGM (dados em binário)");
-			fread(pio->pData,sizeof(char),pio->r * pio->c, fp);
+			fread(pio->pData,sizeof(unsigned char),pio->r * pio->c, fp);
 		break;
 		default:
 			puts("Não está implementado");
@@ -67,7 +72,7 @@ void writePGMImage(struct pgm *pio, char *filename){
 	fprintf(fp, "%d %d\n",pio->c, pio->r);
 	fprintf(fp, "%d\n", 255);
 
-	fwrite(pio->pData, sizeof(char),pio->c * pio->r, fp);
+	fwrite(pio->pDataBorrado, sizeof(unsigned char),pio->c * pio->r, fp);
 
 	fclose(fp);
 
