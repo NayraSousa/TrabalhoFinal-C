@@ -42,6 +42,21 @@ void quantizacao(struct pgm *image, int quant){
                 if(*(image->pData+(i*image->r)+j) >= intv*m && *(image->pData+(i*image->r)+j)<intv*(m+1)){
                     *(image->pDataOrigQuantizado+(i*image->r)+j) = m;
                 }
+                m++;
+            }
+            m=0;
+        }
+    }
+}
+void quantizacao1(struct pgm *image, int quant){
+    printf("Quantização imagem\n");
+
+    float intv =(float)image->mv/quant;
+    int m = 0;
+
+    for(int i = 0; i<image->r; i++){
+        for(int j = 0; j<image->c; j++){
+            while(m!=quant){
                 if(*(image->pDataBorrado+(i*image->r)+j) >= intv*m && *(image->pDataBorrado+(i*image->r)+j)<intv*(m+1)){
                     *(image->pDataBorradoQuantizado+(i*image->r)+j) = m;
                 }
@@ -68,6 +83,7 @@ void gerarScm(struct pgm *image, int quant){
 
 }
 void criarArquivo(struct pgm *image, int quant, char *filename){
+    printf("Gerando Arquivo\n");
     int m = 0;
     char c;
 
@@ -86,7 +102,14 @@ void criarArquivo(struct pgm *image, int quant, char *filename){
         fputs(",", file);
         m++;
     }
+    if(filename[0] == '0'){
+        fprintf(file, "epitelio");
+    } else if(filename[0] == '1'){
+        fprintf(file, "stroma");
+    }
+
     fputs("\n", file);
     fclose(file);
 
 }
+

@@ -2,7 +2,7 @@
 
 void readPGMImage(struct pgm *pio, char *filename){
 
-	char diretorio[100] = "/home/nayra/Projects/trabalho-final/TrabalhoFinal-C/pgm/";
+	char diretorio[100] = "/home/nayra/Projects/trabalho-final/TrabalhoFinal-C/oncotex_pgm/";
 	FILE *fp;
 	char ch;
 	
@@ -34,9 +34,11 @@ void readPGMImage(struct pgm *pio, char *filename){
 	fseek(fp,1, SEEK_CUR);
 
 	pio->pData = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
-	pio->pDataBorrado = (unsigned char *) malloc(pio->r * pio->c * sizeof(unsigned char));
+	pio->pDataBorrado = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
 	pio->pDataOrigQuantizado = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
 	pio->pDataBorradoQuantizado = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
+
+
 
 	switch(pio->tipo){
 		case 2:

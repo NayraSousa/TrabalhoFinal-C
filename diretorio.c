@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
         printf("Formato: \n\t %s <Arquivo.csv> <Tamanho do Filtro> <Quantização>\n",argv[0]);
         exit(1);
     }
-    d = opendir("/home/nayra/Projects/trabalho-final/TrabalhoFinal-C/pgm");
+    d = opendir("/home/nayra/Projects/trabalho-final/TrabalhoFinal-C/oncotex_pgm");
     FILE *file = fopen(argv[1], "w");
     fclose(file);
     if(!file) exit(2);
@@ -24,19 +24,17 @@ int main(int argc, char *argv[])
         begin = clock();
 
         while ((dir = readdir(d)) != NULL){
-            if(cont>0){
+            if(cont>1){
                 
                 printf("\n");
                 printf("%s\n", dir->d_name);
                 readPGMImage(&img, dir->d_name);
                 gerarMatrizBorrada(&img, atoi(argv[2]));
                 quantizacao(&img, atoi(argv[3]));
-                gerarScm(&img, atoi(argv[3]));
-                criarArquivo(&img, atoi(argv[3]), argv[1]);
+                quantizacao1(&img, atoi(argv[3]));
+                // gerarScm(&img, atoi(argv[3]));
+                // // criarArquivo(&img, atoi(argv[3]), argv[1]);
                 
-        
-                
-			// 			// Saída.
             }
             cont++;
         }
