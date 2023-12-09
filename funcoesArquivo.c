@@ -38,8 +38,6 @@ void readPGMImage(struct pgm *pio, char *filename){
 	pio->pDataOrigQuantizado = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
 	pio->pDataBorradoQuantizado = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
 
-
-
 	switch(pio->tipo){
 		case 2:
 			puts("Lendo imagem PGM (dados em texto)");

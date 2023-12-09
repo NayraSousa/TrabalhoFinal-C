@@ -53,16 +53,17 @@ void quantizacao(struct pgm *image, int quant){
 }
 void gerarScm(struct pgm *image, int quant){
     printf("Gerando SCM\n");
-    image->vetorSCM = (unsigned char*) malloc(quant*quant* sizeof(unsigned char));
+    image->vetorSCM = (unsigned char*) malloc(quant*quant*sizeof(unsigned char));
     for(int i = 0; i<quant*quant; i++){
         *(image->vetorSCM+i) = 0;
     }
 
     for(int i = 0; i<image->r; i++){
         for(int j = 0; j<image->c; j++){
-            *(image->vetorSCM+(*(image->pDataOrigQuantizado+(i*image->r)+j)*quant)+*(image->pDataBorradoQuantizado+(i*image->r)+j)) += 1;
+            int linha = *(image->pDataOrigQuantizado+i*image->r+j);
+            int coluna = *(image->pDataBorradoQuantizado+i*image->r+j);
+            *(image->vetorSCM+linha*quant+coluna) += 1;
         }
-        printf("%c", *(image->vetorSCM+i));
     }
 
 }
@@ -70,13 +71,18 @@ void criarArquivo(struct pgm *image, int quant, char *filename){
     int m = 0;
     char c;
 
-    FILE *file = fopen(filename, "a");
+    FILE *file = fopen(filename, "a+");
     if(!file){
         exit(1);
     }
+    for(int i = 1; i<=quant*quant+1; i++){
+        fprintf(file, "%i", i);
+        fputs(",", file);
+    }
+    fputs("\n", file);
     while(m<quant*quant){
         c = *(image->vetorSCM+m)+48;
-        fputc(c, file);
+        fprintf(file, "%hhu", *(image->vetorSCM+m));
         fputs(",", file);
         m++;
     }

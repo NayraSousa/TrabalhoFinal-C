@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 
         while ((dir = readdir(d)) != NULL){
             if(cont>0){
+                
                 printf("\n");
                 printf("%s\n", dir->d_name);
                 readPGMImage(&img, dir->d_name);
@@ -32,6 +33,7 @@ int main(int argc, char *argv[])
                 quantizacao(&img, atoi(argv[3]));
                 gerarScm(&img, atoi(argv[3]));
                 criarArquivo(&img, atoi(argv[3]), argv[1]);
+                
         
                 
 			// 			// Saída.
