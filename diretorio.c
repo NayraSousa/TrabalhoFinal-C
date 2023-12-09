@@ -3,13 +3,20 @@
 #include "funcoesArquivo.h"
 #include "funcoesImagens.h"
  
-int main()
+int main(int argc, char *argv[])
 {
     DIR *d;
     struct dirent *dir;
     struct pgm img;
     int cont = 0;
+    if(argc != 4){
+        printf("Formato: \n\t %s <Arquivo.csv> <Tamanho do Filtro> <Quantização>\n",argv[0]);
+        exit(1);
+    }
     d = opendir("/home/nayra/Projects/trabalho-final/TrabalhoFinal-C/pgm");
+    FILE *file = fopen(argv[1], "w");
+    fclose(file);
+    if(!file) exit(2);
     if (d){
         
         clock_t begin, end;
@@ -18,10 +25,13 @@ int main()
 
         while ((dir = readdir(d)) != NULL){
             if(cont>0){
+                printf("\n");
                 printf("%s\n", dir->d_name);
                 readPGMImage(&img, dir->d_name);
-                gerarMatrizBorrada(&img, 7);
-                writePGMImage(&img, "img7x7.pgm");
+                gerarMatrizBorrada(&img, atoi(argv[2]));
+                quantizacao(&img, atoi(argv[3]));
+                gerarScm(&img, atoi(argv[3]));
+                criarArquivo(&img, atoi(argv[3]), argv[1]);
         
                 
 			// 			// Saída.
