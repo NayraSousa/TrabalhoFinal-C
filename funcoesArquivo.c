@@ -1,8 +1,8 @@
-/********************************************************/
-/* Alunos: Julia Abreu, Leticia Saraiva e Nayra de Sousa*/
-/* Avaliação 04: Trabalho Final                         */
-/* 04.505.23 − 2023.2 − Prof. Daniel Ferreira           */
-/********************************************************/
+/*********************************************************/
+/* Alunos: Julia Abreu, Leticia Saraiva e Nayra de Sousa */
+/* Avaliação 04: Trabalho Final                          */
+/* 04.505.23 − 2023.2 − Prof. Daniel Ferreira            */
+/*********************************************************/
 
 #include "funcoesArquivo.h"
 

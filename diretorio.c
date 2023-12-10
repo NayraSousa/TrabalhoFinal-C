@@ -1,8 +1,8 @@
-/********************************************************/
-/* Alunos: Julia Abreu, Leticia Saraiva e Nayra de Sousa*/
-/* Avaliação 04: Trabalho Final                         */
-/* 04.505.23 − 2023.2 − Prof. Daniel Ferreira           */
-/********************************************************/
+/*********************************************************/
+/* Alunos: Julia Abreu, Leticia Saraiva e Nayra de Sousa */
+/* Avaliação 04: Trabalho Final                          */
+/* 04.505.23 − 2023.2 − Prof. Daniel Ferreira            */
+/*********************************************************/
 
 #include <dirent.h>
 #include <time.h>
@@ -25,6 +25,10 @@ int main(int argc, char *argv[]){
 
     FILE *file = fopen(argv[1], "w");
     FILE *arquivo = fopen(argv[2], "w");
+    for(int i = 0; i<=(atoi(argv[4])*atoi(argv[4])); i++){
+        fprintf(file, "%i", i);
+        fputs(",", file);
+    }
     
     fclose(file);
     fclose(arquivo);
