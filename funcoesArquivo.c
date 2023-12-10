@@ -1,14 +1,16 @@
-/*********************************************************/
-/* Alunos: Julia Abreu, Leticia Saraiva e Nayra de Sousa */
-/* Avaliação 04: Trabalho Final                          */
-/* 04.505.23 − 2023.2 − Prof. Daniel Ferreira            */
-/*********************************************************/
+/***************************************************************/
+/* Alunos: Julia Abreu, Leticia Saraiva e Nayra de Sousa       */
+/* Avaliação 04: Trabalho Final                                */
+/* Matrículas: 20231045050106, 20231045050149, 20231045050130  */
+/* Compilador: gcc 11.4.0                                      */
+/* 04.505.23 − 2023.2 − Prof. Daniel Ferreira                  */
+/***************************************************************/
 
 #include "funcoesArquivo.h"
 
 void readPGMImage(struct pgm *pio, char *filename){
 
-	char diretorio[100] = "/home/nayra/Projects/trabalho-final/TrabalhoFinal-C/oncotex_pgm/";
+	char diretorio[TAM] = "/home/nayra/Projects/trabalho-final/TrabalhoFinal-C/oncotex_pgm/";
 	FILE *fp;
 	char ch;
 	

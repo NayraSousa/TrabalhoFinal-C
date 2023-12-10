@@ -1,8 +1,10 @@
-/*********************************************************/
-/* Alunos: Julia Abreu, Leticia Saraiva e Nayra de Sousa */
-/* Avaliação 04: Trabalho Final                          */
-/* 04.505.23 − 2023.2 − Prof. Daniel Ferreira            */
-/*********************************************************/
+/***************************************************************/
+/* Alunos: Julia Abreu, Leticia Saraiva e Nayra de Sousa       */
+/* Avaliação 04: Trabalho Final                                */
+/* Matrículas: 20231045050106, 20231045050149, 20231045050130  */
+/* Compilador: gcc 11.4.0                                      */
+/* 04.505.23 − 2023.2 − Prof. Daniel Ferreira                  */
+/***************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +14,7 @@
 int calcularMedia(struct pgm *image, int linha, int coluna, int tamJanela) {
 
     int soma = 0;
-
+    //O i e o j vão da linha anterior até a linha posterior
     for (int i = -tamJanela / 2; i <= tamJanela / 2; i++) {
         for (int j = -tamJanela / 2; j <= tamJanela / 2; j++) {
 
@@ -37,7 +39,7 @@ void gerarMatrizBorrada(struct pgm *image, int tamJanela, unsigned int *pDataBor
     }
 }
 void quantizacao(struct pgm *image, int quant, unsigned int *pDataOrigQuantizado, unsigned int *pDataBorrado, unsigned int *pDataBorradoQuantizado){
-    printf("Quantização imagem\n");
+    printf("Quantizando imagem\n");
 
     float intv =(float)image->mv/quant;
     int m = 0;
@@ -45,10 +47,11 @@ void quantizacao(struct pgm *image, int quant, unsigned int *pDataOrigQuantizado
     for(int i = 0; i<image->r; i++){
         for(int j = 0; j<image->c; j++){
             while(m!=quant){
-                //verifica se o elemento do vetor está entre o intervalo, sendo m o nível de quantização
+                //verifica se o elemento do vetor original está entre o intervalo, sendo m o nível de quantização
                 if(*(image->pData+(i*image->r)+j) >= intv*m && *(image->pData+(i*image->r)+j)<intv*(m+1)){
                     *(pDataOrigQuantizado+(i*image->r)+j) = m;
                 }
+                //verifica se o elemento do vetor borrado está entre o intervalo, sendo m o nível de quantização
                 if(*(pDataBorrado+(i*image->r)+j) >= intv*m && *(pDataBorrado+(i*image->r)+j)<intv*(m+1)){
                     *(pDataBorradoQuantizado+(i*image->r)+j) = m;
                 }
@@ -61,10 +64,10 @@ void quantizacao(struct pgm *image, int quant, unsigned int *pDataOrigQuantizado
 
 void gerarScm(struct pgm *image, int quant, unsigned int *pDataOrigQuantizado, unsigned int *pDataBorradoQuantizado, unsigned int *vetorSCM){
     printf("Gerando SCM\n");
+
     for(int i = 0; i<quant*quant; i++){
         *(vetorSCM+i) = 0;
     }
-
     for(int i = 0; i<image->r; i++){
         for(int j = 0; j<image->c; j++){
             int linha = *(pDataOrigQuantizado+i*image->r+j);
@@ -76,26 +79,22 @@ void gerarScm(struct pgm *image, int quant, unsigned int *pDataOrigQuantizado, u
 }
 void criarArquivo(struct pgm *image, int quant, char *filename, unsigned int *vetorSCM){
     printf("Gerando Arquivo\n");
-    int m = 0;
+    int m = 0; //contador
     char c;
 
     FILE *file = fopen(filename, "a");
     if(!file){
         exit(1);
     }
-    // for(int i = 0; i<quant*quant; i++){
-    //     fprintf(file, "%i", i);
-    //     fputs(",", file);
-    // }
+    
     fputs("\n", file);
     while(m<(quant*quant)){
+        //transforma de int pra char
         c = *(vetorSCM+m)+48;
         fprintf(file, "%hhu", *(vetorSCM+m));
         fputs(",", file);
         m++;
     }
-    // fputs("\n", file);
-    // fclose(file);
 
 }
 

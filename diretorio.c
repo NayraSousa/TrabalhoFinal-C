@@ -1,8 +1,10 @@
-/*********************************************************/
-/* Alunos: Julia Abreu, Leticia Saraiva e Nayra de Sousa */
-/* Avaliação 04: Trabalho Final                          */
-/* 04.505.23 − 2023.2 − Prof. Daniel Ferreira            */
-/*********************************************************/
+/***************************************************************/
+/* Alunos: Julia Abreu, Leticia Saraiva e Nayra de Sousa       */
+/* Avaliação 04: Trabalho Final                                */
+/* Matrículas: 20231045050106, 20231045050149, 20231045050130  */
+/* Compilador: gcc 11.4.0                                      */
+/* 04.505.23 − 2023.2 − Prof. Daniel Ferreira                  */
+/***************************************************************/
 
 #include <dirent.h>
 #include <time.h>
@@ -25,6 +27,9 @@ int main(int argc, char *argv[]){
 
     FILE *file = fopen(argv[1], "w");
     FILE *arquivo = fopen(argv[2], "w");
+    if(!file) exit(2);
+    if(!arquivo) exit(3);
+    //cria a coluna no arquivo .csv de acordo com o nível de quantização
     for(int i = 0; i<=(atoi(argv[4])*atoi(argv[4])); i++){
         fprintf(file, "%i", i);
         fputs(",", file);
@@ -32,9 +37,6 @@ int main(int argc, char *argv[]){
     
     fclose(file);
     fclose(arquivo);
-
-    if(!file) exit(2);
-    if(!arquivo) exit(3);
 
     if (d){
         //começa a contar o tempo
