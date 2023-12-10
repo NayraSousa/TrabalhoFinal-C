@@ -1,3 +1,9 @@
+/********************************************************/
+/* Alunos: Julia Abreu, Leticia Saraiva e Nayra de Sousa*/
+/* Avaliação 04: Trabalho Final                         */
+/* 04.505.23 − 2023.2 − Prof. Daniel Ferreira           */
+/********************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "funcoesArquivo.h"
@@ -39,6 +45,7 @@ void quantizacao(struct pgm *image, int quant, unsigned int *pDataOrigQuantizado
     for(int i = 0; i<image->r; i++){
         for(int j = 0; j<image->c; j++){
             while(m!=quant){
+                //verifica se o elemento do vetor está entre o intervalo, sendo m o nível de quantização
                 if(*(image->pData+(i*image->r)+j) >= intv*m && *(image->pData+(i*image->r)+j)<intv*(m+1)){
                     *(pDataOrigQuantizado+(i*image->r)+j) = m;
                 }
@@ -76,10 +83,10 @@ void criarArquivo(struct pgm *image, int quant, char *filename, unsigned int *ve
     if(!file){
         exit(1);
     }
-    for(int i = 1; i<=quant*quant+1; i++){
-        fprintf(file, "%i", i);
-        fputs(",", file);
-    }
+    // for(int i = 0; i<quant*quant; i++){
+    //     fprintf(file, "%i", i);
+    //     fputs(",", file);
+    // }
     fputs("\n", file);
     while(m<(quant*quant)){
         c = *(vetorSCM+m)+48;
@@ -87,8 +94,8 @@ void criarArquivo(struct pgm *image, int quant, char *filename, unsigned int *ve
         fputs(",", file);
         m++;
     }
-    fputs("\n", file);
-    fclose(file);
+    // fputs("\n", file);
+    // fclose(file);
 
 }
 
