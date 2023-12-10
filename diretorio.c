@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
     struct dirent *dir;
     struct pgm img;
     int cont = 0;
+    int j = 0;
     if(argc != 4){
         printf("Formato: \n\t %s <Arquivo.csv> <Tamanho do Filtro> <Quantização>\n",argv[0]);
         exit(1);
@@ -29,12 +30,23 @@ int main(int argc, char *argv[])
                 printf("\n");
                 printf("%s\n", dir->d_name);
                 readPGMImage(&img, dir->d_name);
-                gerarMatrizBorrada(&img, atoi(argv[2]));
-                quantizacao(&img, atoi(argv[3]));
-                quantizacao1(&img, atoi(argv[3]));
-                // gerarScm(&img, atoi(argv[3]));
-                // // criarArquivo(&img, atoi(argv[3]), argv[1]);
-                
+
+                unsigned int *pDataBorrado = (unsigned int*) malloc(img.r*img.c*sizeof(unsigned int));
+                unsigned int *pDataOrigQuantizado = (unsigned int*) malloc(img.r*img.c*sizeof(unsigned int));
+                unsigned int *pDataBorradoQuantizado = (unsigned int*) malloc(img.r*img.c*sizeof(unsigned int));
+                unsigned int *vetorSCM = (unsigned int*) malloc(atoi(argv[3])*atoi(argv[3])*sizeof(unsigned int));
+
+                gerarMatrizBorrada(&img, atoi(argv[2]), pDataBorrado);
+                quantizacao(&img, atoi(argv[3]), pDataOrigQuantizado, pDataBorrado, pDataBorradoQuantizado);
+                gerarScm(&img, atoi(argv[3]), pDataOrigQuantizado, pDataBorradoQuantizado, vetorSCM);
+                criarArquivo(&img, atoi(argv[3]), argv[1], vetorSCM);
+                if(dir->d_name[0] == 0){
+                    fprintf(file, "epitelio");
+                }
+                if(dir->d_name[0] == 1){
+                    fprintf(file, "stroma");
+                }
+
             }
             cont++;
         }

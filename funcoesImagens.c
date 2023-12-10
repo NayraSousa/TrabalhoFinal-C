@@ -22,15 +22,15 @@ int calcularMedia(struct pgm *image, int linha, int coluna, int tamJanela) {
     
     return soma / (tamJanela*tamJanela);
 }
-void gerarMatrizBorrada(struct pgm *image, int tamJanela) {
+void gerarMatrizBorrada(struct pgm *image, int tamJanela, unsigned int *pDataBorrado) {
     printf("Borrando imagem\n");
     for (int i = 0; i < image->r; i++) {
         for(int j = 0; j<image->c;j++){
-            *(image->pDataBorrado+(i*image->r)+j) = calcularMedia(image, i, j, tamJanela);
+            *(pDataBorrado+(i*image->r)+j) = calcularMedia(image, i, j, tamJanela);
         }
     }
 }
-void quantizacao(struct pgm *image, int quant){
+void quantizacao(struct pgm *image, int quant, unsigned int *pDataOrigQuantizado, unsigned int *pDataBorrado, unsigned int *pDataBorradoQuantizado){
     printf("Quantização imagem\n");
 
     float intv =(float)image->mv/quant;
@@ -40,7 +40,10 @@ void quantizacao(struct pgm *image, int quant){
         for(int j = 0; j<image->c; j++){
             while(m!=quant){
                 if(*(image->pData+(i*image->r)+j) >= intv*m && *(image->pData+(i*image->r)+j)<intv*(m+1)){
-                    *(image->pDataOrigQuantizado+(i*image->r)+j) = m;
+                    *(pDataOrigQuantizado+(i*image->r)+j) = m;
+                }
+                if(*(pDataBorrado+(i*image->r)+j) >= intv*m && *(pDataBorrado+(i*image->r)+j)<intv*(m+1)){
+                    *(pDataBorradoQuantizado+(i*image->r)+j) = m;
                 }
                 m++;
             }
@@ -48,46 +51,28 @@ void quantizacao(struct pgm *image, int quant){
         }
     }
 }
-void quantizacao1(struct pgm *image, int quant){
-    printf("Quantização imagem\n");
 
-    float intv =(float)image->mv/quant;
-    int m = 0;
-
-    for(int i = 0; i<image->r; i++){
-        for(int j = 0; j<image->c; j++){
-            while(m!=quant){
-                if(*(image->pDataBorrado+(i*image->r)+j) >= intv*m && *(image->pDataBorrado+(i*image->r)+j)<intv*(m+1)){
-                    *(image->pDataBorradoQuantizado+(i*image->r)+j) = m;
-                }
-                m++;
-            }
-            m=0;
-        }
-    }
-}
-void gerarScm(struct pgm *image, int quant){
+void gerarScm(struct pgm *image, int quant, unsigned int *pDataOrigQuantizado, unsigned int *pDataBorradoQuantizado, unsigned int *vetorSCM){
     printf("Gerando SCM\n");
-    image->vetorSCM = (unsigned char*) malloc(quant*quant*sizeof(unsigned char));
     for(int i = 0; i<quant*quant; i++){
-        *(image->vetorSCM+i) = 0;
+        *(vetorSCM+i) = 0;
     }
 
     for(int i = 0; i<image->r; i++){
         for(int j = 0; j<image->c; j++){
-            int linha = *(image->pDataOrigQuantizado+i*image->r+j);
-            int coluna = *(image->pDataBorradoQuantizado+i*image->r+j);
-            *(image->vetorSCM+linha*quant+coluna) += 1;
+            int linha = *(pDataOrigQuantizado+i*image->r+j);
+            int coluna = *(pDataBorradoQuantizado+i*image->r+j);
+            *(vetorSCM+linha*quant+coluna) += 1;
         }
     }
 
 }
-void criarArquivo(struct pgm *image, int quant, char *filename){
+void criarArquivo(struct pgm *image, int quant, char *filename, unsigned int *vetorSCM){
     printf("Gerando Arquivo\n");
     int m = 0;
     char c;
 
-    FILE *file = fopen(filename, "a+");
+    FILE *file = fopen(filename, "a");
     if(!file){
         exit(1);
     }
@@ -96,18 +81,12 @@ void criarArquivo(struct pgm *image, int quant, char *filename){
         fputs(",", file);
     }
     fputs("\n", file);
-    while(m<quant*quant){
-        c = *(image->vetorSCM+m)+48;
-        fprintf(file, "%hhu", *(image->vetorSCM+m));
+    while(m<(quant*quant)){
+        c = *(vetorSCM+m)+48;
+        fprintf(file, "%hhu", *(vetorSCM+m));
         fputs(",", file);
         m++;
     }
-    if(filename[0] == '0'){
-        fprintf(file, "epitelio");
-    } else if(filename[0] == '1'){
-        fprintf(file, "stroma");
-    }
-
     fputs("\n", file);
     fclose(file);
 

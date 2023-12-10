@@ -8,10 +8,6 @@ struct pgm{
 	int r;
 	int mv;
 	unsigned char *pData;
-	unsigned char *pDataBorrado;
-	unsigned char *pDataOrigQuantizado;
-	unsigned char *pDataBorradoQuantizado;
-	unsigned char *vetorSCM;
 };
 void readPGMImage(struct pgm *, char *);
 void viewPGMImage(struct pgm *);

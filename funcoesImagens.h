@@ -2,8 +2,7 @@
 #include <stdlib.h>
 
 int calcularMedia(struct pgm *, int, int, int);
-void gerarMatrizBorrada(struct pgm *, int);
-void quantizacao(struct pgm *, int);
-void quantizacao1(struct pgm *, int);
-void gerarScm(struct pgm *, int);
-void criarArquivo(struct pgm *, int, char *);
+void gerarMatrizBorrada(struct pgm *, int, unsigned int *);
+void quantizacao(struct pgm *, int, unsigned int *, unsigned int *, unsigned int *);
+void gerarScm(struct pgm *, int, unsigned int *, unsigned int *, unsigned int *);
+void criarArquivo(struct pgm *, int, char *, unsigned int *);

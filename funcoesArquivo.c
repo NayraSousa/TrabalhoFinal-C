@@ -34,11 +34,6 @@ void readPGMImage(struct pgm *pio, char *filename){
 	fseek(fp,1, SEEK_CUR);
 
 	pio->pData = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
-	pio->pDataBorrado = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
-	pio->pDataOrigQuantizado = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
-	pio->pDataBorradoQuantizado = (unsigned char*) malloc(pio->r * pio->c * sizeof(unsigned char));
-
-
 
 	switch(pio->tipo){
 		case 2:
@@ -72,7 +67,7 @@ void writePGMImage(struct pgm *pio, char *filename){
 	fprintf(fp, "%d %d\n",pio->c, pio->r);
 	fprintf(fp, "%d\n", 255);
 
-	fwrite(pio->pDataBorrado, sizeof(unsigned char),pio->c * pio->r, fp);
+	fwrite(pio->pData, sizeof(unsigned char),pio->c * pio->r, fp);
 
 	fclose(fp);
 
@@ -87,7 +82,7 @@ void viewPGMImage(struct pgm *pio){
 
 	for (int k=0; k < (pio->r * pio->c); k++){
 		if (!( k % pio->c)) printf("\n");
-		printf("%2hhu ",*(pio->pDataOrigQuantizado+k));
+		printf("%2hhu ",*(pio->pData+k));
 	}	
 	printf("\n");
 }
