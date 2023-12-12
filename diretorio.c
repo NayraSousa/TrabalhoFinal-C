@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
         clock_t begin, end;
 	    double time_per_img, time_total=0;
         begin = clock();
-        //ler todas as imagens que está no diretório
+        //ler todas as imagens que estão no diretório
         while ((dir = readdir(d)) != NULL){
             //pula o "." e ".."
             if(cont>1){
@@ -81,6 +81,7 @@ int main(int argc, char *argv[]){
         }
         closedir(d);
         end = clock();
+        
         //para de contar o tempo
 	    time_total = (double)(end - begin) / CLOCKS_PER_SEC;
         printf("Tempo Total: %lf\n",time_total);
