@@ -80,7 +80,6 @@ void gerarScm(struct pgm *image, int quant, unsigned int *pDataOrigQuantizado, u
 void criarArquivo(struct pgm *image, int quant, char *filename, unsigned int *vetorSCM){
     printf("Gerando Arquivo\n");
     int m = 0; //contador
-    char c;
 
     FILE *file = fopen(filename, "a");
     if(!file){
@@ -90,7 +89,6 @@ void criarArquivo(struct pgm *image, int quant, char *filename, unsigned int *ve
     fputs("\n", file);
     while(m<(quant*quant)){
         //transforma de int pra char
-        c = *(vetorSCM+m)+48;
         fprintf(file, "%hhu", *(vetorSCM+m));
         fputs(",", file);
         m++;
