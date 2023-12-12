@@ -81,6 +81,7 @@ int main(int argc, char *argv[]){
         }
         closedir(d);
         end = clock();
+        
         //para de contar o tempo
 	    time_total = (double)(end - begin) / CLOCKS_PER_SEC;
         printf("Tempo Total: %lf\n",time_total);

@@ -30,6 +30,7 @@ int calcularMedia(struct pgm *image, int linha, int coluna, int tamJanela) {
     
     return soma / (tamJanela*tamJanela);
 }
+
 void gerarMatrizBorrada(struct pgm *image, int tamJanela, unsigned int *pDataBorrado) {
     printf("Borrando imagem\n");
     for (int i = 0; i < image->r; i++) {
@@ -38,6 +39,7 @@ void gerarMatrizBorrada(struct pgm *image, int tamJanela, unsigned int *pDataBor
         }
     }
 }
+
 void quantizacao(struct pgm *image, int quant, unsigned int *pDataOrigQuantizado, unsigned int *pDataBorrado, unsigned int *pDataBorradoQuantizado){
     printf("Quantizando imagem\n");
 
@@ -77,6 +79,7 @@ void gerarScm(struct pgm *image, int quant, unsigned int *pDataOrigQuantizado, u
     }
 
 }
+
 void criarArquivo(struct pgm *image, int quant, char *filename, unsigned int *vetorSCM){
     printf("Gerando Arquivo\n");
     int m = 0; //contador
